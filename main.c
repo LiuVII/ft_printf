@@ -12,6 +12,8 @@
 
 //#include "libft.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
 
 int	ft_printf(const char *fmt, ...);
 
@@ -36,12 +38,17 @@ int main(int argc, char const **argv)
 	// a[1] = ft_printf("%.4s", "42");
 	// a[2] = ft_printf("%4.15s", "42 is the answer");
 	// a[3] = ft_printf("%4.s", "42");
-	a[0] = ft_printf("%.4d", 42);
-	a[1] = ft_printf("%.4d", 424242);
-	a[2] = ft_printf("%4.15d\n", 42);
-	a[3] = ft_printf("%15.4d\n", 42);
-	a[4] = ft_printf("%4.15d\n", -42);
-	a[5] = ft_printf("%15.4d\n", -42);
+	// a[0] = ft_printf("%.4d", 42);
+	// a[1] = ft_printf("%.4d", 424242);
+	// a[2] = ft_printf("%4.15d", 42);
+	// a[3] = ft_printf("%15.4d", 42);
+	// a[4] = ft_printf("%4.15d\n", -42);
+	// a[5] = ft_printf("%.d, %.0d\n", 0, 0);
+	// a[6] = ft_printf("%s", NULL);
+	a[0] = ft_printf("%.22D", LONG_MAX);
+	a[1] = ft_printf("%.22D\n", LONG_MIN);
+	a[2] = ft_printf("%.u, %.0u", 0, 0);
+	a[3] = ft_printf("%U", ULONG_MAX);
 	// a[1] = ft_printf("%.4s", "42");
 	// a[2] = ft_printf("%4.15s", "42 is the answer");
 	// a[3] = ft_printf("%4.s", "42");
@@ -62,17 +69,22 @@ int main(int argc, char const **argv)
 	// b[1] = printf("%.4s", "42");
 	// b[2] = printf("%4.15s", "42 is the answer");
 	// b[3] = printf("%4.s", "42");
-	b[0] = printf("%.4d", 42);
-	b[1] = printf("%.4d", 424242);
-	b[2] = printf("%4.15d\n", 42);
-	b[3] = printf("%15.4d\n", 42);
-	b[4] = printf("%4.15d\n", -42);
-	b[5] = printf("%15.4d\n", -42);
+	// b[0] = printf("%.4d", 42);
+	// b[1] = printf("%.4d", 424242);
+	// b[2] = printf("%4.15d", 42);
+	// b[3] = printf("%15.4d", 42);
+	// b[4] = printf("%4.15d\n", -42);
+	// b[5] = printf("%.d, %.0d\n", 0, 0);
+	// b[6] = printf("%s", NULL);
+	b[0] = printf("%.22lD", LONG_MAX);
+	b[1] = printf("%.22lD\n", LONG_MIN);
+	b[2] = printf("%.u, %.0u", 0, 0);
+	b[3] = printf("%lU", ULONG_MAX);
 	// b[0] = printf("%d", 42);
 	// b[1] = printf("%i", 42);
 	// b[2] = printf("This is a simple test.");
 	// b[3] = printf("%u", -42);
-	n = 6;
+	n = 4;
 	i = -1;
 	printf("\n");
 	while (++i < n)

@@ -14,7 +14,9 @@
 LIBNAME		=	libftprintf.a
 
 #FUNCS		+=	main.c
-FUNCS		+=	ft_printf.c
+FUNCS		+=	ft_printf.c\
+				ft_putulnbr.c\
+				ft_numlen.c
 
 LIB_FUNCS	=	ft_isalpha.c\
 				ft_isdigit.c\
