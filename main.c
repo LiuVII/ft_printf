@@ -13,7 +13,10 @@
 //#include "libft.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdlib.h>
 #include <limits.h>
+#include <locale.h>
+#include <wchar.h>
 
 int	ft_printf(const char *fmt, ...);
 
@@ -26,6 +29,7 @@ int main(int argc, char const **argv)
 
 	if (argc < 2 && argv[0])
 		return (0);
+	setlocale(LC_ALL, "");
 	// ft_printf("You:\n");
 	// ft_printf("Str %s | Num %%d | Char %c\n", argv[1], atoi(argv[2]), argv[3][0]);
 	// ft_printf(":%15s:\n", "Hello, world!");
@@ -45,10 +49,18 @@ int main(int argc, char const **argv)
 	// a[4] = ft_printf("%4.15d\n", -42);
 	// a[5] = ft_printf("%.d, %.0d\n", 0, 0);
 	// a[6] = ft_printf("%s", NULL);
-	a[0] = ft_printf("%.22D", LONG_MAX);
-	a[1] = ft_printf("%.22D\n", LONG_MIN);
-	a[2] = ft_printf("%.u, %.0u", 0, 0);
-	a[3] = ft_printf("%U", ULONG_MAX);
+	// a[0] = ft_printf("%.22D ", LONG_MAX);
+	// a[1] = ft_printf("%.22D\n", LONG_MIN);
+	// a[2] = ft_printf("%.u, %.0u ", 0, 0);
+	// a[3] = ft_printf("%U\n", ULONG_MAX);
+	// a[4] = ft_printf("%o ", INT_MIN / 2);
+	// a[5] = ft_printf("%O\n", INT_MIN / 2);
+	// a[6] = ft_printf("%.x\n", -255);
+	// a[7] = ft_printf("%X", -255);
+	a[0] = ft_printf("%C\n", L'\u4E2A');
+	a[1] = ft_printf("%C", L'a');
+	a[2] = ft_printf("%S\n", L"米米米米米");
+	a[3] = ft_printf("%S\n", L"XYZab");
 	// a[1] = ft_printf("%.4s", "42");
 	// a[2] = ft_printf("%4.15s", "42 is the answer");
 	// a[3] = ft_printf("%4.s", "42");
@@ -57,7 +69,7 @@ int main(int argc, char const **argv)
 	// a[1] = ft_printf("%i", 42);
 	// a[2] = ft_printf("This is a simple test.");
 	// a[3] = ft_printf("%u", -42);
-	// printf("\nLib:\n");
+	printf("Lib:\n");
 	// printf("Str %s | Num %%d | Char %c\n", argv[1], atoi(argv[2])/*, argv[3][0]*/);
 	// printf(":%15s:\n", "Hello, world!");
 	// printf(":%.10s:\n", "Hello, world!");
@@ -76,10 +88,19 @@ int main(int argc, char const **argv)
 	// b[4] = printf("%4.15d\n", -42);
 	// b[5] = printf("%.d, %.0d\n", 0, 0);
 	// b[6] = printf("%s", NULL);
-	b[0] = printf("%.22lD", LONG_MAX);
-	b[1] = printf("%.22lD\n", LONG_MIN);
-	b[2] = printf("%.u, %.0u", 0, 0);
-	b[3] = printf("%lU", ULONG_MAX);
+	// b[0] = printf("%.22lD ", LONG_MAX);
+	// b[1] = printf("%.22lD\n", LONG_MIN);
+	// b[2] = printf("%.u, %.0u ", 0, 0);
+	// b[3] = printf("%lU\n", ULONG_MAX);
+	// b[4] = printf("%o ", INT_MIN / 2);
+	// b[5] = printf("%O\n", INT_MIN / 2);
+	// b[6] = printf("%.x\n", -255);
+	// b[7] = printf("%X", -255);
+	b[0] = printf("%C\n", L'\u4E2A');
+	b[1] = printf("%C", L'a');
+	b[2] = printf("%S\n", L"米米米米米");
+	b[3] = printf("%S\n", L"XYZab");
+	// wprintf(L"\u4E2A");
 	// b[0] = printf("%d", 42);
 	// b[1] = printf("%i", 42);
 	// b[2] = printf("This is a simple test.");
