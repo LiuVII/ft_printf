@@ -16,6 +16,15 @@
 #define FT_PRINTF_H
 #define ABS(x) ((x < 0) ? (-x) : (x))
 
+typedef struct 		s_data
+{
+	int				res;
+	int				farr[5];
+	int				flag;
+	int				width;
+	int				prec;
+}					t_data;
+
 void		ft_putulnbr(unsigned long long n);
 char		*ft_ultoa_base(unsigned long value, unsigned int base, int lc);
 int			ft_numlen(long long n);
