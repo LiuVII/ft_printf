@@ -62,12 +62,12 @@ int			ft_printf(const char *fmt, ...)
 		return (-1);
 	while (*fmt)
 	{
-		if ((*fmt == '%' && *(fmt++)) || d->width > 0 || d->prec >= 0 || d->flag)
+		if (d->width > 0 || d->prec >= 0 || d->flag || (*fmt == '%' && *(fmt++)))
 		{
 			if (*fmt == 's')
 			{
 				// write(1,"TEST2\n", 6);
-				if ((s = va_arg(ap, char *)))
+				if ((s = va_arg(ap, char *)) || d->farr[1])
 				{
 					len = ft_strlen(s);
 					len = (d->prec >= 0 && d->prec < len) ? d->prec : len;
@@ -103,35 +103,29 @@ int			ft_printf(const char *fmt, ...)
 				}
 				ft_reset_data(d);
 			}
-			else if ((*fmt == 'd' || *fmt == 'i') && d->prec)
+			else if (*fmt == 'd' || *fmt == 'i')
 			{
 				(d->prec >= 0) ? d->farr[1] = 0 : 0;
-				i = va_arg(ap, int);
-				sign = (i < 0) ? -1 : 1; 
-				// len = (d->prec >= 0 && ((d->width > 0 && d->prec < d->width) || !d->width)) ? d->prec : strlen(ft_itoa(d));
-				len = ft_numlen(i * sign) + (i >= 0 && (d->farr[3] || d->farr[4]));;
-				//len = (d->prec >= 0 && d->prec < len) ? d->prec : len;
-				l = ((d->prec > len) ? d->prec : len) - 1 - (sign - 1) / 2;
-				(sign < 0 && d->farr[1]) ? ft_putchar('-') : 0;
-				(i >= 0 && d->farr[1] && (d->farr[3] || d->farr[4])) ? ft_putchar(32 + 11 * d->farr[4]) : 0;
-				while (++l < d->width)
-					(d->farr[1]) ? ft_putchar('0') : ft_putchar(' ');
-				(sign < 0 && !d->farr[1]) ? ft_putchar('-') : 0;
-				(i >= 0 && !d->farr[1] && (d->farr[3] || d->farr[4])) ? ft_putchar(32 + 11 * d->farr[4]) : 0;
-				l = len - 1;
-				while (++l < d->prec)
-					ft_putchar('0');
-				ft_putulnbr(i * sign);
-				d->res += len - (sign - 1) / 2 + ((d->width > len  && d->width >= d->prec) ? (d->width - len + (sign - 1) / 2) : 0) + ((d->prec > len && d->prec > d->width) ? (d->prec - len) : 0);
-				ft_reset_data(d);
-			}
-			else if (*fmt == 'c')
-			{
-				l = 0;
-				while (++l < d->width)
-					(d->farr[1] == 0) ? ft_putchar(' ') : ft_putchar('0');
-				ft_putchar((char)va_arg(ap, int));
-				d->res += (d->width > 1) ? d->width : 1;
+				if (d->prec)
+				{
+					i = va_arg(ap, int);
+					sign = (i < 0) ? -1 : 1; 
+					// len = (d->prec >= 0 && ((d->width > 0 && d->prec < d->width) || !d->width)) ? d->prec : strlen(ft_itoa(d));
+					len = ft_numlen(i * sign) + (i >= 0 && (d->farr[3] || d->farr[4]));;
+					//len = (d->prec >= 0 && d->prec < len) ? d->prec : len;
+					l = ((d->prec > len) ? d->prec : len) - 1 - (sign - 1) / 2;
+					(sign < 0 && d->farr[1]) ? ft_putchar('-') : 0;
+					(i >= 0 && d->farr[1] && (d->farr[3] || d->farr[4])) ? ft_putchar(32 + 11 * d->farr[4]) : 0;
+					while (++l < d->width)
+						(d->farr[1]) ? ft_putchar('0') : ft_putchar(' ');
+					(sign < 0 && !d->farr[1]) ? ft_putchar('-') : 0;
+					(i >= 0 && !d->farr[1] && (d->farr[3] || d->farr[4])) ? ft_putchar(32 + 11 * d->farr[4]) : 0;
+					l = len - 1;
+					while (++l < d->prec)
+						ft_putchar('0');
+					ft_putulnbr(i * sign);
+					d->res += len - (sign - 1) / 2 + ((d->width > len  && d->width >= d->prec) ? (d->width - len + (sign - 1) / 2) : 0) + ((d->prec > len && d->prec > d->width) ? (d->prec - len) : 0);
+				}
 				ft_reset_data(d);
 			}
 			else if (*fmt == 'C' || (ft_strncmp(fmt, "lc", 2) == 0 && fmt++))
@@ -168,45 +162,50 @@ int			ft_printf(const char *fmt, ...)
 					ft_putstr("0");
 				ft_reset_data(d);
 			}
-			else if (*fmt == 'u' && d->prec)
+			else if (*fmt == 'u')
 			{
 				(d->prec >= 0) ? d->farr[1] = 0 : 0;
-				ud = va_arg(ap, unsigned int);
-				len = ft_numlen(ud);
-				l = ((d->prec > len) ? d->prec : len) - 1;
-				while (++l < d->width)
-					(d->farr[1] == 0) ? ft_putchar(' ') : ft_putchar('0');
-				l = len - 1;
-				while (++l < d->prec)
-					ft_putchar('0');
-				ft_putulnbr(ud);
-				d->res += len + ((d->width > len  && d->width >= d->prec) ? (d->width - len) : 0) + ((d->prec > len && d->prec > d->width) ? (d->prec - len) : 0);
-				d->prec = -1;
-				d->width = 0;
-			}
-			else if ((*fmt == 'D' || ((ft_strncmp(fmt, "ld", 2) == 0
-				|| ft_strncmp(fmt, "li", 2) == 0) && fmt++)) && d->prec)
-			{
-				(d->prec >= 0) ? d->farr[1] = 0 : 0;
-				lg = va_arg(ap, long);
-				sign = (lg < 0) ? -1 : 1; 
-				len = ft_numlen(lg * sign) + (lg >= 0 && (d->farr[3] || d->farr[4]));
-				l = ((d->prec > len) ? d->prec : len) - 1 - (sign - 1) / 2;
-				(sign < 0 && d->farr[1]) ? ft_putchar('-') : 0;
-				(lg >= 0 && d->farr[1] && (d->farr[3] || d->farr[4])) ? ft_putchar(32 + 11 * d->farr[4]) : 0;
-				while (++l < d->width)
-					(d->farr[1]) ? ft_putchar('0') : ft_putchar(' ');
-				(sign < 0 && !d->farr[1]) ? ft_putchar('-') : 0;
-				(lg >= 0 && !d->farr[1] && (d->farr[3] || d->farr[4])) ? ft_putchar(32 + 11 * d->farr[4]) : 0;
-				l = len - 1;
-				while (++l < d->prec)
-					ft_putchar('0');
-				ft_putulnbr(lg * sign);
-				d->res += len - (sign - 1) / 2 + ((d->width > len  && d->width >= d->prec) ? (d->width - len + (sign - 1) / 2) : 0) + ((d->prec > len && d->prec > d->width) ? (d->prec - len) : 0);
+				if (d->prec)
+				{
+					ud = va_arg(ap, unsigned int);
+					len = ft_numlen(ud);
+					l = ((d->prec > len) ? d->prec : len) - 1;
+					while (++l < d->width)
+						(d->farr[1] == 0) ? ft_putchar(' ') : ft_putchar('0');
+					l = len - 1;
+					while (++l < d->prec)
+						ft_putchar('0');
+					ft_putulnbr(ud);
+					d->res += len + ((d->width > len  && d->width >= d->prec) ? (d->width - len) : 0) + ((d->prec > len && d->prec > d->width) ? (d->prec - len) : 0);
+				}
 				ft_reset_data(d);
 			}
-			else if ((*fmt == 'O' || ((ft_strncmp(fmt, "lo", 2) == 0
-				|| ft_strncmp(fmt, "lO", 2) == 0) && fmt++)) && d->prec)
+			else if (*fmt == 'D' || ((ft_strncmp(fmt, "ld", 2) == 0
+				|| ft_strncmp(fmt, "li", 2) == 0) && fmt++))
+			{
+				(d->prec >= 0) ? d->farr[1] = 0 : 0;
+				if (d->prec)
+				{
+					lg = va_arg(ap, long);
+					sign = (lg < 0) ? -1 : 1; 
+					len = ft_numlen(lg * sign) + (lg >= 0 && (d->farr[3] || d->farr[4]));
+					l = ((d->prec > len) ? d->prec : len) - 1 - (sign - 1) / 2;
+					(sign < 0 && d->farr[1]) ? ft_putchar('-') : 0;
+					(lg >= 0 && d->farr[1] && (d->farr[3] || d->farr[4])) ? ft_putchar(32 + 11 * d->farr[4]) : 0;
+					while (++l < d->width)
+						(d->farr[1]) ? ft_putchar('0') : ft_putchar(' ');
+					(sign < 0 && !d->farr[1]) ? ft_putchar('-') : 0;
+					(lg >= 0 && !d->farr[1] && (d->farr[3] || d->farr[4])) ? ft_putchar(32 + 11 * d->farr[4]) : 0;
+					l = len - 1;
+					while (++l < d->prec)
+						ft_putchar('0');
+					ft_putulnbr(lg * sign);
+					d->res += len - (sign - 1) / 2 + ((d->width > len  && d->width >= d->prec) ? (d->width - len + (sign - 1) / 2) : 0) + ((d->prec > len && d->prec > d->width) ? (d->prec - len) : 0);
+				}
+				ft_reset_data(d);
+			}
+			else if (*fmt == 'O' || ((ft_strncmp(fmt, "lo", 2) == 0
+				|| ft_strncmp(fmt, "lO", 2) == 0) && fmt++))
 			{
 				(d->prec >= 0) ? d->farr[1] = 0 : 0;
 				if (d->prec)
@@ -229,59 +228,68 @@ int			ft_printf(const char *fmt, ...)
 					ft_putstr("0");
 				ft_reset_data(d);
 			}
-			else if ((*fmt == 'U' || ((ft_strncmp(fmt, "lu", 2) == 0
-				|| ft_strncmp(fmt, "lU", 2) == 0 || ft_strncmp(fmt, "lD", 2) == 0) && fmt++)) && d->prec)
+			else if (*fmt == 'U' || ((ft_strncmp(fmt, "lu", 2) == 0
+				|| ft_strncmp(fmt, "lU", 2) == 0 || ft_strncmp(fmt, "lD", 2) == 0) && fmt++))
 			{
 				(d->prec >= 0) ? d->farr[1] = 0 : 0;
-				ulg = va_arg(ap, unsigned long);
-				len = ft_numlen(ulg);
-				l = ((d->prec > len) ? d->prec : len) - 1;
-				while (++l < d->width)
-					(d->farr[1] == 0) ? ft_putchar(' ') : ft_putchar('0');
-				l = len - 1;
-				while (++l < d->prec)
-					ft_putchar('0');
-				ft_putulnbr(ulg);
-				d->res += len + ((d->width > len  && d->width >= d->prec) ? (d->width - len) : 0) + ((d->prec > len && d->prec > d->width) ? (d->prec - len) : 0);
+				if (d->prec)
+				{
+					ulg = va_arg(ap, unsigned long);
+					len = ft_numlen(ulg);
+					l = ((d->prec > len) ? d->prec : len) - 1;
+					while (++l < d->width)
+						(d->farr[1] == 0) ? ft_putchar(' ') : ft_putchar('0');
+					l = len - 1;
+					while (++l < d->prec)
+						ft_putchar('0');
+					ft_putulnbr(ulg);
+					d->res += len + ((d->width > len  && d->width >= d->prec) ? (d->width - len) : 0) + ((d->prec > len && d->prec > d->width) ? (d->prec - len) : 0);
+				}
 				ft_reset_data(d);
 			}
-			else if ((*fmt == 'x' || (ft_strncmp(fmt, "lx", 2) == 0 && fmt++)) && d->prec)
+			else if (*fmt == 'x' || (ft_strncmp(fmt, "lx", 2) == 0 && fmt++))
 			{
 				(d->prec >= 0) ? d->farr[1] = 0 : 0;
-				ulg = va_arg(ap, unsigned long);
-				s = ft_ultoa_base(ulg, 16, 1);
-				len = ft_strlen(s) + ((ulg > 0 && d->farr[0]) ? 2 : 0);
-				l = ((d->prec > len) ? d->prec : len) - 1;
-				while (++l < d->width)
-					(d->farr[1] == 0) ? ft_putchar(' ') : ft_putchar('0');
-				l = len - 1;
-				(ulg > 0 && d->farr[0]) ? ft_putstr("0x") : 0;
-				while (++l < d->prec)
-					ft_putchar('0');
-				ft_putstr(s);
-				free(s);
-				d->res += len + ((d->width > len  && d->width >= d->prec) ? (d->width - len) : 0) + ((d->prec > len && d->prec > d->width) ? (d->prec - len) : 0);
+				if (d->prec)
+				{
+					ulg = va_arg(ap, unsigned long);
+					s = ft_ultoa_base(ulg, 16, 1);
+					len = ft_strlen(s) + ((ulg > 0 && d->farr[0]) ? 2 : 0);
+					l = ((d->prec > len) ? d->prec : len) - 1;
+					while (++l < d->width)
+						(d->farr[1] == 0) ? ft_putchar(' ') : ft_putchar('0');
+					l = len - 1;
+					(ulg > 0 && d->farr[0]) ? ft_putstr("0x") : 0;
+					while (++l < d->prec)
+						ft_putchar('0');
+					ft_putstr(s);
+					free(s);
+					d->res += len + ((d->width > len  && d->width >= d->prec) ? (d->width - len) : 0) + ((d->prec > len && d->prec > d->width) ? (d->prec - len) : 0);
+				}
 				ft_reset_data(d);
 			}
-			else if ((*fmt == 'X' || (ft_strncmp(fmt, "lX", 2) == 0 && fmt++)) && d->prec)
+			else if (*fmt == 'X' || (ft_strncmp(fmt, "lX", 2) == 0 && fmt++))
 			{
 				(d->prec >= 0) ? d->farr[1] = 0 : 0;
-				ulg = va_arg(ap, unsigned long);
-				s = ft_ultoa_base(ulg, 16, 0);
-				len = ft_strlen(s) + ((ulg > 0 && d->farr[0]) ? 2 : 0);;
-				l = ((d->prec > len) ? d->prec : len) - 1;
-				while (++l < d->width)
-					(d->farr[1] == 0) ? ft_putchar(' ') : ft_putchar('0');
-				l = len - 1;
-				(ulg > 0 && d->farr[0]) ? ft_putstr("0X") : 0;
-				while (++l < d->prec)
-					ft_putchar('0');
-				ft_putstr(s);
-				free(s);
-				d->res += len + ((d->width > len  && d->width >= d->prec) ? (d->width - len) : 0) + ((d->prec > len && d->prec > d->width) ? (d->prec - len) : 0);
+				if (d->prec)
+				{
+					ulg = va_arg(ap, unsigned long);
+					s = ft_ultoa_base(ulg, 16, 0);
+					len = ft_strlen(s) + ((ulg > 0 && d->farr[0]) ? 2 : 0);;
+					l = ((d->prec > len) ? d->prec : len) - 1;
+					while (++l < d->width)
+						(d->farr[1] == 0) ? ft_putchar(' ') : ft_putchar('0');
+					l = len - 1;
+					(ulg > 0 && d->farr[0]) ? ft_putstr("0X") : 0;
+					while (++l < d->prec)
+						ft_putchar('0');
+					ft_putstr(s);
+					free(s);
+					d->res += len + ((d->width > len  && d->width >= d->prec) ? (d->width - len) : 0) + ((d->prec > len && d->prec > d->width) ? (d->prec - len) : 0);
+				}
 				ft_reset_data(d);
 			}
-			else if ((*fmt == 'p' || (ft_strncmp(fmt, "lp", 2) == 0 && fmt++)))
+			else if (*fmt == 'p' || (ft_strncmp(fmt, "lp", 2) == 0 && fmt++))
 			{
 				(d->prec >= 0) ? d->farr[1] = 0 : 0;
 				if (d->prec)
@@ -306,11 +314,12 @@ int			ft_printf(const char *fmt, ...)
 					ft_putstr("0x");
 				ft_reset_data(d);
 			}
-			else if (*fmt == '%')
-			{
-				ft_putchar(*fmt);
-				d->res++;
-			}
+			// else if (*fmt == '%')
+			// {
+			// 	ft_putchar(*fmt);
+			// 	ft_reset_data(d);
+			// 	d->res++;
+			// }
 			else if ((*fmt == '#' && (d->flag = 1)) || (*fmt == '0' && (d->flag = 2)) || (*fmt == '-' && (d->flag = 3))
 				|| (*fmt == ' ' && (d->flag = 4)) || (*fmt == '+' && (d->flag = 5)))
 			{
@@ -321,7 +330,7 @@ int			ft_printf(const char *fmt, ...)
 				if (d->farr[4] == 1)
 					d->farr[3] = 0;
 			}
-			else if (*fmt == '.')
+			else if (d->prec == -1 && *fmt == '.')
 			{
 				// printf("%s\n", "TEST");
 				d->prec = ft_atoi(fmt + 1);
@@ -330,22 +339,35 @@ int			ft_printf(const char *fmt, ...)
 			}
 			else if (d->prec == -1 && ft_isdigit(*fmt) && (d->width = ft_atoi(fmt)))
 				fmt += strlen(ft_itoa(d->width)) - 1;
-			else if (d->prec == 0)
+			// else if (d->prec == 0)
+			// 	ft_reset_data(d);
+			else if (*fmt == 'c' || *fmt/* == '%'*/)
 			{
+				l = 0;
+				while (++l < d->width)
+					(d->farr[1] == 0) ? ft_putchar(' ') : ft_putchar('0');
+				(*fmt == 'c') ? ft_putchar((char)va_arg(ap, int)) : ft_putchar(*fmt);
+				d->res += (d->width > 1) ? d->width : 1;
 				ft_reset_data(d);
 			}
-			else
-			{
-				write(1, fmt, 1);
-				return (-1);
-			}
+			// else if (*fmt && ++(d->res))
+			// {
+			// 	ft_putchar(*fmt);
+			// 	ft_reset_data(d);
+			// }
+			// else if (*fmt)
+			// {
+			// 	// write(1, fmt, 1);
+			// 	printf("\nError on %s\n", fmt);
+			// 	return (-1);
+			// }
 		}
 		else
 		{
 			ft_putchar(*fmt);
 			d->res++;
 		}
-		fmt++;
+		(*fmt) ? fmt++ : 0;
 	}
 	free(d);
 	va_end(ap);
