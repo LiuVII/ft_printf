@@ -14,13 +14,27 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-size_t	ft_wputstr(wchar_t *s)
+size_t	ft_wputstr(wchar_t *ws, int l)
 {
-	size_t len;
+	size_t	len;
+	int		c;
+	int		flag;
 
 	len = 0;
-	if (s)
-		while (*s)
-			len += ft_wputchar(*s++);
+	flag = (l < 0) ? 0 : 1;
+	if (ws)
+		while (*ws)
+		{
+			c = *ws;
+			l--;
+			(c >= 0x00000080) ? l-- : 0;
+			c = c >> 6;
+			(c >= 0x00000040) ? l-- : 0;
+			c = c >> 6;
+			(c >= 0x00000010) ? l-- : 0;
+			if (flag && l < 0) 
+				return (len);
+			len += ft_wputchar(*ws++);
+		}
 	return (len);
 }

@@ -21,7 +21,7 @@ char	*ft_wtochar(wchar_t *wstr)
 	int		flag;
 	char	*str;
 
-	len = ft_wstrlen(wstr);
+	len = ft_wstrlen(wstr, -1);
 	str = (char*)malloc(len + 1);
 	str[len] = 0;
 	len = 0;
@@ -29,7 +29,7 @@ char	*ft_wtochar(wchar_t *wstr)
 		while (*wstr)
 		{
 			c = *wstr++;
-			flag = ft_wstrlen(&c);
+			flag = ft_wstrlen(&c, -1);
 			str[len + flag - 1] = (flag >= 2) ? (128 + c % 64) : c;
 			if (flag >= 2)
 			{

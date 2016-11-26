@@ -12,24 +12,29 @@
 
 #include <stdlib.h>
 
-size_t		ft_wstrlen(wchar_t *wstr)
+size_t		ft_wstrlen(wchar_t *wstr, int l)
 {
 	size_t	len;
 	int		c;
+	size_t	ltmp;
+	int		flag;
 
 	len = 0;
-	// printf("%S ", wstr);
+	flag = (l < 0) ? 0 : 1;
 	if (wstr)
 		while (*wstr)
 		{
+			ltmp = 1;
 			c = *(wstr++);
-			len++;
-			(c >= 0x00000080) ? len++ : 0;
+			(c >= 0x00000080) ? ltmp++ : 0;
 			c = c >> 6;
-			(c >= 0x00000040)?  len++ : 0;
+			(c >= 0x00000040) ? ltmp++ : 0;
 			c = c >> 6;
-			(c >= 0x00000010) ? len++ : 0;
+			(c >= 0x00000010) ? ltmp++ : 0;
+			l -= ltmp;
+			if (flag && l < 0) 
+				return (len);
+			len += ltmp;
 		}
-	// printf("%zu\n", len);
 	return (len);
 }

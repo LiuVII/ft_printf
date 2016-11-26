@@ -21,7 +21,10 @@ FUNCS		+=	ft_printf.c\
 				ft_wstrlen.c\
 				ft_wputchar.c\
 				ft_wputstr.c\
-				ft_wtochar.c
+				ft_wtochar.c\
+				ft_prtf_str.c\
+				ft_prtf_xop.c\
+				ft_prtf_uid.c
 
 LIB_FUNCS	=	ft_isalpha.c\
 				ft_isdigit.c\
