@@ -24,7 +24,86 @@ void	ft_reset_data(t_data *d)
 	d->width = 0;
 	d->prec = -1;
 	d->flag = 0;
+	d->mnum = 0;
+}
 
+static int	ft_check_flags(t_data *d, const char *fmt, int sh)
+{
+	if ((*fmt == '#' && (d->flag = 1)) 
+		|| (*fmt == '0' && (d->flag = 2))
+		|| (*fmt == '-' && (d->flag = 3)) 
+		|| (*fmt == ' ' && (d->flag = 4))
+		|| (*fmt == '+' && (d->flag = 5)))
+	{
+		if (d->farr[d->flag - 1] == 0)
+			d->farr[d->flag - 1] = 1;
+		(d->farr[4] == 1) ?	(d->farr[3] = 0) : 0;
+		sh = 0;
+	}
+	else if ((*fmt == 'l' || *fmt == 'j' || *fmt == 'z' || *fmt == 'h' ||
+	 ((!ft_strncmp(fmt, "hh", 2) || !ft_strncmp(fmt, "ll", 2)) && ++sh)) 
+		&& (d->mnum += (int)(*fmt) * (sh + 2)))
+		sh++;
+	else if (d->prec == -1 && ft_isdigit(*fmt) && (d->width = ft_atoi(fmt)))
+		sh = ft_numlen(d->width) - 1;
+	else if (d->prec == -1 && *fmt == '.')
+	{
+		sh = 0;
+		d->prec = ft_atoi(fmt + 1);
+		if (d->prec > 0 || *(fmt + 1) == '0')
+			sh += ft_numlen(d->prec);
+	}
+	return (sh);
+}
+
+static int ft_check_num(t_data *d, const char *fmt, va_list *ap, int sh)
+{
+	(d->prec >= 0 && (d->tmp = d->farr[1] + 1)) ? d->farr[1] = 0 : 0;
+	if ((*fmt == 'd' || *fmt == 'i') && sh++)
+		(d->prec) ? ft_conv_id(d, *ap) : 0;
+	else if ((*fmt == 'D' || (d->mnum == 'l' &&
+		(*fmt == 'd' || *fmt == 'i'))) && sh++)
+		(d->prec) ? ft_conv_cd(d, *ap) : 0;
+	else if ((*fmt == 'U' || (d->mnum == 'l' && *fmt == 'u')) && sh++)
+		(d->prec) ? ft_conv_cu(d, *ap) : 0;
+	else if ((*fmt == 'O' || (d->mnum == 'l' && *fmt == 'o')) && sh++)
+		ft_conv_co(d, *ap);
+	else if ((*fmt == 'x' || *fmt == 'X' || *fmt == 'o' || *fmt == 'u') && sh++)
+	{
+		if (d->prec && *fmt != 'o')
+			ft_conv_x(d, *ap, (*fmt == 'x'), (*fmt == 'u') ? 10 : 16);
+		(*fmt == 'o') ? ft_conv_o(d, *ap) : 0;
+	}
+	else if (*fmt == 'p' && sh++)
+		ft_conv_p(d, *ap);
+	(sh >= 0) ? ft_reset_data(d) : (d->prec >= 0 && (d->farr[1] = d->tmp - 1));
+	return (sh);
+}
+
+static int ft_prtf_loop(t_data *d, const char *fmt, va_list *ap, int sh)
+{
+	while (*fmt)
+	{
+		if (d->width > 0 || d->prec >= 0 || d->flag
+			|| d->mnum || (*fmt == '%' && *fmt++))
+		{
+			if (*fmt == 's')
+				ft_conv_s(d, *ap);
+			else if (*fmt == 'S' || (!ft_strncmp(fmt, "ls", 2) && fmt++))
+				ft_conv_cs(d, *ap);
+			else if (*fmt == 'C' || (!ft_strncmp(fmt, "lc", 2) && fmt++))
+				ft_conv_cc(d, *ap);
+			else if ((sh = ft_check_num(d, fmt, ap, -1)) >= 0 ||
+				(sh = ft_check_flags(d, fmt, -1)) >= 0) 
+				fmt += sh;
+			else if (*fmt)
+				ft_conv_c(*fmt, d, *ap);
+		}
+		else if (++(d->res))
+			ft_putchar(*fmt);
+		(*fmt) ? fmt++ : 0;
+	}
+	return (0);
 }
 
 int			ft_printf(const char *fmt, ...)
@@ -38,65 +117,7 @@ int			ft_printf(const char *fmt, ...)
 	ft_reset_data(d);
 	if (!fmt)
 		return (-1);
-	while (*fmt)
-	{
-		if (d->width > 0 || d->prec >= 0 || d->flag || (*fmt == '%' && *(fmt++)))
-		{
-			if (*fmt == 's')
-				ft_conv_s(d, ap);
-			else if (*fmt == 'S' || (ft_strncmp(fmt, "ls", 2) == 0 && fmt++))
-				ft_conv_cs(d, ap);
-			else if (*fmt == 'd' || *fmt == 'i')
-				ft_conv_id(d, ap);
-			else if (*fmt == 'C' || (ft_strncmp(fmt, "lc", 2) == 0 && fmt++))
-				ft_conv_cc(d, ap);
-			else if (*fmt == 'o')
-				ft_conv_o(d, ap);
-			else if (*fmt == 'u')
-				ft_conv_u(d, ap);
-			else if (*fmt == 'D' || ((ft_strncmp(fmt, "ld", 2) == 0
-				|| ft_strncmp(fmt, "li", 2) == 0) && fmt++))
-				ft_conv_cd(d, ap);
-			else if (*fmt == 'O' || ((ft_strncmp(fmt, "lo", 2) == 0
-				|| ft_strncmp(fmt, "lO", 2) == 0) && fmt++))
-				ft_conv_co(d, ap);
-			else if (*fmt == 'U' || ((ft_strncmp(fmt, "lu", 2) == 0
-				|| ft_strncmp(fmt, "lU", 2) == 0 || ft_strncmp(fmt, "lD", 2) == 0) && fmt++))
-				ft_conv_cu(d, ap);
-			else if (*fmt == 'x' || (ft_strncmp(fmt, "lx", 2) == 0 && fmt++))
-				ft_conv_x(d, ap);
-			else if (*fmt == 'X' || (ft_strncmp(fmt, "lX", 2) == 0 && fmt++))
-				ft_conv_cx(d, ap);
-			else if (*fmt == 'p' || (ft_strncmp(fmt, "lp", 2) == 0 && fmt++))
-				ft_conv_p(d, ap);
-			else if ((*fmt == '#' && (d->flag = 1)) || (*fmt == '0' && (d->flag = 2)) || (*fmt == '-' && (d->flag = 3))
-				|| (*fmt == ' ' && (d->flag = 4)) || (*fmt == '+' && (d->flag = 5)))
-			{
-				if (d->farr[d->flag - 1] == 0)
-					d->farr[d->flag - 1] = 1;
-				else
-					return (-1);
-				if (d->farr[4] == 1)
-					d->farr[3] = 0;
-			}
-			else if (d->prec == -1 && *fmt == '.')
-			{
-				d->prec = ft_atoi(fmt + 1);
-				if (d->prec > 0 || *(fmt + 1) == '0')
-					fmt += strlen(ft_itoa(d->prec));
-			}
-			else if (d->prec == -1 && ft_isdigit(*fmt) && (d->width = ft_atoi(fmt)))
-				fmt += strlen(ft_itoa(d->width)) - 1;
-			else if (*fmt)
-				ft_conv_c(*fmt, d, ap);
-		}
-		else
-		{
-			ft_putchar(*fmt);
-			d->res++;
-		}
-		(*fmt) ? fmt++ : 0;
-	}
+	ft_prtf_loop(d, fmt, &ap, 0);
 	free(d);
 	va_end(ap);
 	return (d->res);

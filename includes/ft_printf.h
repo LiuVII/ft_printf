@@ -25,6 +25,8 @@ typedef struct 		s_data
 	int				flag;
 	int				width;
 	int				prec;
+	int				mnum;
+	int				tmp;
 }					t_data;
 
 void		ft_reset_data(t_data *d);
@@ -42,7 +44,7 @@ int			ft_conv_cc(t_data *d, va_list ap);
 int			ft_conv_c(char fmt, t_data *d, va_list ap);
 int			ft_conv_o(t_data *d, va_list ap);
 int			ft_conv_co(t_data *d, va_list ap);
-int			ft_conv_x(t_data *d, va_list ap);
+int			ft_conv_x(t_data *d, va_list ap, int cs, int base);
 int			ft_conv_cx(t_data *d, va_list ap);
 int			ft_conv_p(t_data *d, va_list ap);
 int			ft_conv_id(t_data *d, va_list ap);
