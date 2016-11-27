@@ -10,21 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include "ft_printf.h"
 #include <unistd.h>
 #include <stdlib.h>
-// #include <locale.h>
 
 size_t	ft_wputchar(int c)
 {
-	// int	wc;
 	char	wc[4];
-	// char happy[] = { 0xe2, 0x98, 0xba };
 	size_t	flag;
-	// wchar_t			wc;
-	
-	// printf("c: %d", c);
-	// setlocale(LC_ALL, "");
+
 	flag = 0;
 	wc[3] = (c >= 0x00000080 && ++flag) ? (128 + c % 64) : c;
 	if (flag == 1)
@@ -42,37 +36,58 @@ size_t	ft_wputchar(int c)
 		c = c >> 6;
 		wc[0] = (240 + c);
 	}
-	// wc = c;
-	// if (c >= 0x00000080 && c < 0x000007FF)
-	// {
-	// 	wc[0] = 128 + (c) % 64;
-	// 	c = c >> 6;
-	// 	wc[1] = (192 + c) << 8;
-	// 	flag = 1;
-	// }
-	// else if (c >= 0x000007FF && c < 0x0000FFFF)
-	// {
-	// 	wc = 128 + c % 64;
-	// 	c = c >> 6;
-	// 	wc += (128 + c % 64) << 8;
-	// 	c = c >> 6;
-	// 	wc = (224 + c) << 16;
-	// 	flag = 2;
-	// }
-	// else if (c >= 0x0000FFFF && c < 0x001FFFFF)
-	// {
-	// 	wc = 128 + c % 64;
-	// 	c = c >> 6;
-	// 	wc += (128 + c % 64) << 8;
-	// 	c = c >> 6;
-	// 	wc += (128 + c % 64) << 16;
-	// 	c = c >> 6;
-	// 	wc = (240 + c) << 24;
-	// 	flag = 3;
-	// }	
-	// printf("wc: %d\n", wc);
 	write(1, &wc[3 - flag], flag + 1);
 	return (flag + 1);
-	// write(1, "\n", 1);
-	// write(1, happy, 3);
+}
+
+size_t	ft_wputstr(wchar_t *ws, int l)
+{
+	size_t	len;
+	int		c;
+	int		flag;
+
+	len = 0;
+	flag = (l < 0) ? 0 : 1;
+	if (ws)
+		while (*ws)
+		{
+			c = *ws;
+			l--;
+			(c >= 0x00000080) ? l-- : 0;
+			c = c >> 6;
+			(c >= 0x00000040) ? l-- : 0;
+			c = c >> 6;
+			(c >= 0x00000010) ? l-- : 0;
+			if (flag && l < 0)
+				return (len);
+			len += ft_wputchar(*ws++);
+		}
+	return (len);
+}
+
+size_t	ft_wstrlen(wchar_t *wstr, int l)
+{
+	size_t	len;
+	int		c;
+	size_t	ltmp;
+	int		flag;
+
+	len = 0;
+	flag = (l < 0) ? 0 : 1;
+	if (wstr)
+		while (*wstr)
+		{
+			ltmp = 1;
+			c = *(wstr++);
+			(c >= 0x00000080) ? ltmp++ : 0;
+			c = c >> 6;
+			(c >= 0x00000040) ? ltmp++ : 0;
+			c = c >> 6;
+			(c >= 0x00000010) ? ltmp++ : 0;
+			l -= ltmp;
+			if (flag && l < 0)
+				return (len);
+			len += ltmp;
+		}
+	return (len);
 }

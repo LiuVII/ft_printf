@@ -82,7 +82,6 @@ int		ft_conv_cc(t_data *d, va_list ap)
 		while (++l < d->width)
 			(d->farr[1]) ? ft_putchar('0') : ft_putchar(' ');
 	wc = (wchar_t)va_arg(ap, int);
-	// printf("int wc: %d\n", (int)wc);
 	len = ft_wputchar(wc);
 	if (d->farr[2])
 		while (++l < d->width)
@@ -94,9 +93,7 @@ int		ft_conv_cc(t_data *d, va_list ap)
 
 int		ft_conv_c(char fmt, t_data *d, va_list ap)
 {
-	// int		len;
 	int		l;
-	// char	c;
 
 	l = 0;
 	if (!d->farr[2])

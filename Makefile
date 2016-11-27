@@ -18,10 +18,7 @@ FUNCS		+=	ft_printf.c\
 				ft_putulnbr.c\
 				ft_numlen.c\
 				ft_ultoa_base.c\
-				ft_wstrlen.c\
-				ft_wputchar.c\
-				ft_wputstr.c\
-				ft_wtochar.c\
+				ft_wcharstr.c\
 				ft_prtf_str.c\
 				ft_prtf_xop.c\
 				ft_prtf_uid.c

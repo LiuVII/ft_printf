@@ -16,7 +16,7 @@
 int		ft_numlen(unsigned long long n)
 {
 	unsigned long long	num;
-	int	len;
+	int					len;
 
 	len = 1;
 	num = n;

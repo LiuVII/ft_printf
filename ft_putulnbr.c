@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static void ft_recput(unsigned long long n)
+static void	ft_recput(unsigned long long n)
 {
 	if (n >= 10)
 		ft_recput(n / 10);

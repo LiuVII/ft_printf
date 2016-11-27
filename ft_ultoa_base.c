@@ -20,7 +20,7 @@ char	*ft_ultoa_base(unsigned long value, unsigned int base, int lc)
 	int				i;
 
 	i = 1;
-	(lc != 0) ? (lc = 1) : 0; 
+	(lc != 0) ? (lc = 1) : 0;
 	num = value;
 	while ((num /= base) >= 1)
 		i++;
