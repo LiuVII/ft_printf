@@ -17,6 +17,14 @@
 #include "libft.h"
 #define FT_PRINTF_H
 #define ABS(x) ((x < 0) ? (-x) : (x))
+#define C_RED     "\x1b[31m"
+#define C_GREEN   "\x1b[32m"
+#define C_YELLOW  "\x1b[33m"
+#define C_BLUE    "\x1b[34m"
+#define C_MAGENTA "\x1b[35m"
+#define C_CYAN    "\x1b[36m"
+#define C_RES   "\x1b[0m"
+
 
 typedef struct 		s_data
 {
@@ -38,19 +46,17 @@ size_t		ft_wputchar(int c);
 size_t		ft_wputstr(wchar_t *ws, int l);
 char		*ft_wtochar(wchar_t *wstr);
 void		ft_put_blanks(int len, t_data *d, int inc, int check);
+void		ft_wildcard(t_data *d, int num);
 
 int			ft_conv_s(t_data *d, va_list ap);
 int			ft_conv_cs(t_data *d, va_list ap);
 int			ft_conv_cc(t_data *d, va_list ap);
 int			ft_conv_c(char fmt, t_data *d, va_list ap);
-// int			ft_conv_o(t_data *d, va_list ap);
 int			ft_conv_co(t_data *d, va_list ap);
 int			ft_conv_xcxou(t_data *d, va_list ap, int cs, int base);
-// int			ft_conv_cx(t_data *d, va_list ap);
 int			ft_conv_p(t_data *d, va_list ap);
 int			ft_conv_id(t_data *d, va_list ap);
 int			ft_conv_cd(t_data *d, va_list ap);
-// int			ft_conv_u(t_data *d, va_list ap);
 int			ft_conv_cu(t_data *d, va_list ap);
 
 #endif

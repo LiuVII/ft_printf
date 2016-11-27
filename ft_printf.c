@@ -61,11 +61,11 @@ static int	ft_check_num(t_data *d, const char *fmt, va_list *ap, int sh)
 	if (d->prec >= 0 && (d->tmp = d->farr[1] + 1))
 		d->farr[1] = 0;
 	if ((*fmt == 'd' || *fmt == 'i') && sh++)
-		(d->prec) ? ft_conv_id(d, *ap) : 0;
+		ft_conv_id(d, *ap);
 	else if (*fmt == 'D' && sh++)
-		(d->prec) ? ft_conv_cd(d, *ap) : 0;
+		ft_conv_cd(d, *ap);
 	else if (*fmt == 'U' && sh++)
-		(d->prec) ? ft_conv_cu(d, *ap) : 0;
+		ft_conv_cu(d, *ap);
 	else if (*fmt == 'O' && sh++)
 		ft_conv_co(d, *ap);
 	else if ((*fmt == 'x' || *fmt == 'X' || *fmt == 'o' || *fmt == 'u') && sh++)
@@ -97,6 +97,8 @@ static int	ft_prtf_loop(t_data *d, const char *fmt, va_list *ap, int sh)
 			else if ((sh = ft_check_num(d, fmt, ap, -1)) >= 0 ||
 				(sh = ft_check_flags(d, fmt, -1)) >= 0)
 				fmt += sh;
+			else if (*fmt == '*')
+				ft_wildcard(d, va_arg(*ap, int));
 			else if (*fmt)
 				ft_conv_c(*fmt, d, *ap);
 		}

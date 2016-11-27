@@ -62,11 +62,8 @@ int		ft_conv_cs(t_data *d, va_list ap)
 				ft_putchar(' ');
 		d->res += len + ((d->width > len) ? (d->width - len) : 0);
 	}
-	else
-	{
+	else if ((d->res += 6))
 		ft_putstr("(null)");
-		d->res += 6;
-	}
 	ft_reset_data(d);
 	return (0);
 }

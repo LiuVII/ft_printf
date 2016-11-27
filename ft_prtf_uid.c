@@ -12,6 +12,21 @@
 
 #include "ft_printf.h"
 
+void		ft_wildcard(t_data *d, int num)
+{
+	if (d->prec == -1)
+	{
+		d->width = ABS(num);
+		d->flag = 1;
+		(num < 0) ? (d->farr[2] = 1) : 0;
+	}
+	else if (d->prec >= 0)
+	{
+		d->flag = 1;
+		d->prec = (num >= 0) ? num : -1;
+	}
+}
+
 void		ft_put_blanks(int len, t_data *d, int inc, int check)
 {
 	int	l;
@@ -55,9 +70,12 @@ int			ft_conv_id(t_data *d, va_list ap)
 	(d->modn == 'j') ? i = (va_arg(ap, intmax_t)) : 0;
 	(d->modn == 'z') ? i = (va_arg(ap, ssize_t)) : 0;
 	sign = (i < 0) ? -1 : 1;
-	len = ft_numlen((i < 0) ? -i : i) + (i >= 0 && (d->farr[3] || d->farr[4]));
+	len = 0;
+	if (i || d->prec)
+		len = (ft_numlen((i < 0) ? -i : i)
+			+ (i >= 0 && (d->farr[3] || d->farr[4])));
 	ft_swnp(len, sign, d);
-	ft_putulnbr(i * sign);
+	(i || d->prec) ? ft_putulnbr(i * sign) : 0;
 	(d->farr[2]) ? ft_put_blanks(len, d, -(sign - 1) / 2, 0) : 0;
 	d->res += len;
 	return (0);
@@ -67,14 +85,14 @@ int			ft_conv_cd(t_data *d, va_list ap)
 {
 	int		len;
 	long	lg;
-	int		sign;
+	long	sign;
 
 	lg = va_arg(ap, long);
 	sign = (lg < 0) ? -1 : 1;
-	len = ft_numlen((lg < 0) ? -lg : lg)
-	+ (lg >= 0 && (d->farr[3] || d->farr[4]));
+	len = (lg || d->prec) ? (ft_numlen(lg * sign)
+		+ (lg >= 0 && (d->farr[3] || d->farr[4]))) : 0;
 	ft_swnp(len, sign, d);
-	ft_putulnbr(lg * sign);
+	(lg || d->prec) ? ft_putulnbr(lg * sign) : 0;
 	(d->farr[2]) ? ft_put_blanks(len, d, -(sign - 1) / 2, 0) : 0;
 	d->res += len;
 	return (0);
