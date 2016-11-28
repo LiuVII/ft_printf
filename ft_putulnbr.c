@@ -12,7 +12,6 @@
 
 #include "libft.h"
 #include <unistd.h>
-#include <stdio.h>
 
 static void	ft_recput(unsigned long long n)
 {

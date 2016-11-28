@@ -39,6 +39,7 @@ typedef struct 		s_data
 
 void		ft_reset_data(t_data *d);
 void		ft_putulnbr(unsigned long long n);
+void		ft_putlldbl(long double n, int prec);
 char		*ft_ultoa_base(unsigned long value, unsigned int base, int lc);
 int			ft_numlen(long long n);
 size_t		ft_wstrlen(wchar_t *wstr, int l);
@@ -58,5 +59,6 @@ int			ft_conv_p(t_data *d, va_list ap);
 int			ft_conv_id(t_data *d, va_list ap);
 int			ft_conv_cd(t_data *d, va_list ap);
 int			ft_conv_cu(t_data *d, va_list ap);
+int			ft_conv_f(t_data *d, va_list ap);
 
 #endif

@@ -16,6 +16,7 @@ LIBNAME		=	libftprintf.a
 #FUNCS		+=	main.c
 FUNCS		+=	ft_printf.c\
 				ft_putulnbr.c\
+				ft_putlldbl.c\
 				ft_numlen.c\
 				ft_ultoa_base.c\
 				ft_wcharstr.c\

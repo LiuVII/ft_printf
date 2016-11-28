@@ -35,6 +35,7 @@ static int	ft_check_flags(t_data *d, const char *fmt, int sh)
 		|| (*fmt == ' ' && (d->flag = 4))
 		|| (*fmt == '+' && (d->flag = 5)))
 	{
+		// printf("flags TEST %s| fl %d\n", fmt, flag);
 		if (d->farr[d->flag - 1] == 0)
 			d->farr[d->flag - 1] = 1;
 		(d->farr[4] == 1) ? (d->farr[3] = 0) : 0;
@@ -44,15 +45,23 @@ static int	ft_check_flags(t_data *d, const char *fmt, int sh)
 	((!ft_strncmp(fmt, "hh", 2) || !ft_strncmp(fmt, "ll", 2)) && ++sh))
 		&& (d->modn += (int)(*fmt) * (sh + 2)))
 		sh++;
-	else if (d->prec == -1 && ft_isdigit(*fmt) && (d->width = ft_atoi(fmt)))
-		sh = ft_numlen(d->width) - 1;
 	else if (d->prec == -1 && *fmt == '.')
 	{
 		sh = 0;
 		d->prec = ft_atoi(fmt + 1);
+		// printf("prec TEST %s| prec %d\n", fmt, d->prec);
+		if (d->prec < 0)
+		{
+			// sh += ft_numlen(-(d->prec)) + 1;
+			d->prec = 0;
+		}
 		if (d->prec > 0 || *(fmt + 1) == '0')
 			sh += ft_numlen(d->prec);
 	}
+	// else if (d->prec == -1 && ft_isdigit(*fmt) && (d->width = ft_atoi(fmt)))
+	// 	sh = ft_numlen(d->width) - 1;
+	else if (ft_isdigit(*fmt) && (d->width = ft_atoi(fmt)))
+		sh = ft_numlen(d->width) - 1;
 	return (sh);
 }
 
@@ -68,6 +77,8 @@ static int	ft_check_num(t_data *d, const char *fmt, va_list *ap, int sh)
 		ft_conv_cu(d, *ap);
 	else if (*fmt == 'O' && sh++)
 		ft_conv_co(d, *ap);
+	else if ((*fmt == 'f' || *fmt == 'F') && sh++)
+		ft_conv_f(d, *ap);
 	else if ((*fmt == 'x' || *fmt == 'X' || *fmt == 'o' || *fmt == 'u') && sh++)
 	{
 		if (*fmt != 'o')
@@ -96,7 +107,10 @@ static int	ft_prtf_loop(t_data *d, const char *fmt, va_list *ap, int sh)
 				ft_conv_cc(d, *ap);
 			else if ((sh = ft_check_num(d, fmt, ap, -1)) >= 0 ||
 				(sh = ft_check_flags(d, fmt, -1)) >= 0)
+			{
+				// printf("fnn TEST %s\n", fmt);
 				fmt += sh;
+			}
 			else if (*fmt == '*')
 				ft_wildcard(d, va_arg(*ap, int));
 			else if (*fmt)

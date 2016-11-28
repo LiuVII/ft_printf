@@ -12,6 +12,36 @@
 
 #include "ft_printf.h"
 
+
+int		ft_conv_f(t_data *d, va_list ap)
+{
+	int		len;
+	double	n;
+	int		sign;
+	int		inc;
+
+	n = va_arg(ap, double);
+	sign = (n < 0) ? -1 : 1;
+	len = (n || d->prec) ? (ft_numlen((double)sign * n) + (d->prec != 0)) : 0;
+	inc = (n >= 0 && (d->farr[3] || d->farr[4])) - (sign - 1) / 2;
+	(d->prec < 0 && n) ? (d->prec = 6) : 0;
+	(d->prec >= 0) ? len += d->prec : 0;
+	(sign < 0 && d->farr[1] && ++d->res) ? ft_putchar('-') : 0;
+	if (sign > 0 && d->farr[1] && (d->farr[3] || d->farr[4]) && ++d->res)
+		ft_putchar(32 + 11 * d->farr[4]);
+	(!d->farr[2]) ? ft_put_blanks(len, d, inc, d->farr[1]) : 0;
+	if (sign < 0 && !d->farr[1] && ++d->res)
+		ft_putchar('-');
+	if (sign > 0 && !d->farr[1] && (d->farr[3] || d->farr[4]) && ++d->res)
+		ft_putchar(32 + 11 * d->farr[4]);
+	d->res += (d->prec > len) ? d->prec - len : 0;
+	if (len)
+		ft_putlldbl((n >= 0) ? n : -n, d->prec);
+	(d->farr[2]) ? ft_put_blanks(len, d, inc, 0) : 0;
+	d->res += len;
+	return (0);
+}
+
 int		ft_conv_s(t_data *d, va_list ap)
 {
 	char	*s;
