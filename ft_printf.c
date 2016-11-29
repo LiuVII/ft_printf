@@ -27,6 +27,10 @@ void		ft_reset_data(t_data *d)
 	d->modn = 0;
 }
 
+/*
+**	sh = shift
+*/
+
 static int	ft_check_flags(t_data *d, const char *fmt, int sh)
 {
 	if ((*fmt == '#' && (d->flag = 1))
@@ -35,7 +39,6 @@ static int	ft_check_flags(t_data *d, const char *fmt, int sh)
 		|| (*fmt == ' ' && (d->flag = 4))
 		|| (*fmt == '+' && (d->flag = 5)))
 	{
-		// printf("flags TEST %s| fl %d\n", fmt, flag);
 		if (d->farr[d->flag - 1] == 0)
 			d->farr[d->flag - 1] = 1;
 		(d->farr[4] == 1) ? (d->farr[3] = 0) : 0;
@@ -45,25 +48,21 @@ static int	ft_check_flags(t_data *d, const char *fmt, int sh)
 	((!ft_strncmp(fmt, "hh", 2) || !ft_strncmp(fmt, "ll", 2)) && ++sh))
 		&& (d->modn += (int)(*fmt) * (sh + 2)))
 		sh++;
-	else if (d->prec == -1 && *fmt == '.')
+	else if (d->prec == -1 && *fmt == '.' && sh++)
 	{
-		sh = 0;
 		d->prec = ft_atoi(fmt + 1);
-		// printf("prec TEST %s| prec %d\n", fmt, d->prec);
-		if (d->prec < 0)
-		{
-			// sh += ft_numlen(-(d->prec)) + 1;
-			d->prec = 0;
-		}
+		(d->prec < 0) ? (d->prec = 0) : 0;
 		if (d->prec > 0 || *(fmt + 1) == '0')
 			sh += ft_numlen(d->prec);
 	}
-	// else if (d->prec == -1 && ft_isdigit(*fmt) && (d->width = ft_atoi(fmt)))
-	// 	sh = ft_numlen(d->width) - 1;
 	else if (ft_isdigit(*fmt) && (d->width = ft_atoi(fmt)))
 		sh = ft_numlen(d->width) - 1;
 	return (sh);
 }
+
+/*
+**	sh = shift
+*/
 
 static int	ft_check_num(t_data *d, const char *fmt, va_list *ap, int sh)
 {
@@ -92,9 +91,9 @@ static int	ft_check_num(t_data *d, const char *fmt, va_list *ap, int sh)
 	return (sh);
 }
 
-static int	ft_prtf_loop(t_data *d, const char *fmt, va_list *ap, int sh)
+static int	ft_prtf_loop(t_data *d, const char *fmt, va_list *ap, int flag)
 {
-	while (*fmt)
+	while (*fmt && (flag = -1))
 	{
 		if (d->width > 0 || d->prec >= 0 || d->flag
 			|| d->modn || (*fmt == '%' && *fmt++))
@@ -103,17 +102,15 @@ static int	ft_prtf_loop(t_data *d, const char *fmt, va_list *ap, int sh)
 				ft_conv_s(d, *ap);
 			else if (*fmt == 'S' || (!ft_strncmp(fmt, "ls", 2) && fmt++))
 				ft_conv_cs(d, *ap);
-			else if (*fmt == 'C' || (!ft_strncmp(fmt, "lc", 2) && fmt++))
-				ft_conv_cc(d, *ap);
-			else if ((sh = ft_check_num(d, fmt, ap, -1)) >= 0 ||
-				(sh = ft_check_flags(d, fmt, -1)) >= 0)
-			{
-				// printf("fnn TEST %s\n", fmt);
-				fmt += sh;
-			}
-			else if (*fmt == '*')
+			else if ((*fmt == 'C' || (!ft_strncmp(fmt, "lc", 2) && fmt++))
+			&& flag++ && (ft_conv_cc(d, *ap)))
+				return (-1);
+			else if ((flag < 0) && ((flag = ft_check_num(d, fmt, ap, -1)) >= 0
+				|| (flag = ft_check_flags(d, fmt, -1)) >= 0))
+				fmt += flag;
+			else if ((flag < 0) && *fmt == '*')
 				ft_wildcard(d, va_arg(*ap, int));
-			else if (*fmt)
+			else if ((flag < 0) && *fmt)
 				ft_conv_c(*fmt, d, *ap);
 		}
 		else if (++(d->res))
@@ -126,16 +123,15 @@ static int	ft_prtf_loop(t_data *d, const char *fmt, va_list *ap, int sh)
 int			ft_printf(const char *fmt, ...)
 {
 	va_list	ap;
-	t_data	*d;
+	t_data	d;
 
-	d = (t_data*)malloc(sizeof(t_data));
 	va_start(ap, fmt);
-	d->res = 0;
-	ft_reset_data(d);
+	d.res = 0;
+	ft_reset_data(&d);
 	if (!fmt)
 		return (-1);
-	ft_prtf_loop(d, fmt, &ap, 0);
-	free(d);
+	if (ft_prtf_loop(&d, fmt, &ap, -1))
+		return (-1);
 	va_end(ap);
-	return (d->res);
+	return (d.res);
 }

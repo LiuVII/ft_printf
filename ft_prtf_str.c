@@ -12,7 +12,6 @@
 
 #include "ft_printf.h"
 
-
 int		ft_conv_f(t_data *d, va_list ap)
 {
 	int		len;
@@ -104,11 +103,14 @@ int		ft_conv_cc(t_data *d, va_list ap)
 	int		l;
 	wchar_t	wc;
 
+	l = va_arg(ap, int);
+	if (l < 0 || l > 0x10FFFF || (l > 55295 && l < 57344))
+		return (-1);
+	wc = (wchar_t)l;
 	l = 0;
 	if (!d->farr[2])
 		while (++l < d->width)
 			(d->farr[1]) ? ft_putchar('0') : ft_putchar(' ');
-	wc = (wchar_t)va_arg(ap, int);
 	len = ft_wputchar(wc);
 	if (d->farr[2])
 		while (++l < d->width)

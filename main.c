@@ -22,15 +22,15 @@ void ft_putlldbl(long double n, int prec);
 
 int	main(int argc, char const **argv)
 {
-	int a[11];
-	int	b[11];
-	int	n;
+	// int a[11];
+	// int	b[11];
+	// int	n;
 	int	i;
 
 	if (argc < 2 && argv[0])
 		return (0);
 	printf("%s\n", argv[1]);
-	// setlocale(LC_ALL, "");
+	setlocale(LC_ALL, "");
 	// ft_printf("You:\n");
 	// ft_printf(":%15s:\n", "Hello, world!");
 	// ft_printf(":%.10s:\n", "Hello, world!");
@@ -42,15 +42,22 @@ int	main(int argc, char const **argv)
 	// a[1] = ft_printf("{%f}{%F}\n", -1.42, -1.42);
 	// a[2] = ft_printf("{%f}{%F}\n", -1.41676767, -1.41676767);
 	// a[3] = ft_printf("{%.f}{%.F}", -1.0, -1.0);
-	a[0] = ft_printf("%5.5d| %5.5d| %5.- d| %5.-+0# d|\n", -33812, -33812, -33812, -33812);
-	a[1] = ft_printf("%5.4d| %5.4d| %5.4- d| %5.4-+0# d|\n", -33812, -33812, -33812, -33812);
-	a[2] = ft_printf("%5.5d| %5.5d| %5.- d| %5.-+0# d|\n", 33812, 33812, 33812, 33812);
-	a[3] = ft_printf("%5.4d| %5.4d| %5.4- d| %5.4-+0# d|\n", 33812, 33812, 33812, 33812);
-	a[4] = ft_printf("%5.5d|%5.5d|%5. d|%5.+0# d|\n", 0, 0, 0, 0);
-	a[5] = ft_printf("%5.5d|%5.4d|%5.4 d|%5.4+0# d|\n", 0, 0, 0, 0);
-	a[6] = ft_printf("%5.5d|%5.5d|%5. d|%5.+0# d|\n", 1001, 1001, 1001, 1001);
-	a[7] = ft_printf("%5.5d|%5.4d|%5.4 d|%5.4+0# d|\n", -1000, -1000, -1000, -1000);
-	a[8] = ft_printf("%5.5d|%5.5d|%5. d|%5.+0# d|\n", 1, 1, 1, 1);
+	// a[0] = ft_printf("%5.5d| %5.5d| %5.- d| %5.-+0# d|\n", -33812, -33812, -33812, -33812);
+	// a[1] = ft_printf("%5.4d| %5.4d| %5.4- d| %5.4-+0# d|\n", -33812, -33812, -33812, -33812);
+	// a[2] = ft_printf("%5.5d| %5.5d| %5.- d| %5.-+0# d|\n", 33812, 33812, 33812, 33812);
+	// a[3] = ft_printf("%5.4d| %5.4d| %5.4- d| %5.4-+0# d|\n", 33812, 33812, 33812, 33812);
+	// a[4] = ft_printf("%5.5d|%5.5d|%5. d|%5.+0# d|\n", 0, 0, 0, 0);
+	// a[5] = ft_printf("%5.5d|%5.4d|%5.4 d|%5.4+0# d|\n", 0, 0, 0, 0);
+	// a[6] = ft_printf("%5.5d|%5.5d|%5. d|%5.+0# d|\n", 1001, 1001, 1001, 1001);
+	// a[7] = ft_printf("%5.5d|%5.4d|%5.4 d|%5.4+0# d|\n", -1000, -1000, -1000, -1000);
+	// a[8] = ft_printf("%5.5d|%5.5d|%5. d|%5.+0# d|\n", 1, 1, 1, 1);
+	// printf("RES %d", printf("%c abvc", -200));
+	// printf("RES %d\n", printf("%C abc", -1));
+	// printf("int %u char %u\n", sizeof(unsigned short), sizeof(wchar_t));
+	// printf("%f\n", 4872984674981571389467149671934850915.990345840954095);
+	// i = 57343;
+	// while (++i < 57348)
+	// 	printf("RES %d: %d\n", i, printf("Char %C\n", i));
 	// a[0] = ft_printf("%.-5d| %.5-d| %.- d| %.-+0# d|\n", -33812, -33812, -33812, -33812);
 	// a[1] = ft_printf("%.-4d| %.4-d| %.4- d| %.4-+0# d|\n", -33812, -33812, -33812, -33812);
 	// a[2] = ft_printf("%.-5d| %.5-d| %.- d| %.-+0# d|\n", 33812, 33812, 33812, 33812);
@@ -78,7 +85,7 @@ int	main(int argc, char const **argv)
 	// a[7] = ft_printf("\n{%.d}", 42);
 	// a[8] = ft_printf("\n{%.u}", 42);
 	// a[9] = ft_printf("\n%.d, %.0d", 0, 0);
-	// ft_printf("\nLe fichier \x1b[36m%s\x1b[0m contient : \x1b[31m%s\x1b[0m", "xyz", "ABCDEF");
+	ft_printf("\nLe fichier \x1b[36m%s\x1b[0m contient : \x1b[31m%s\x1b[0m", "xyz", "ABCDEF");
 	// a[0] = ft_printf("%15.4s", "42");
 	// a[1] = ft_printf("NULL s %s", "");
 	// a[0] = ft_printf("%.4s", "42 is the answer");
@@ -131,12 +138,12 @@ int	main(int argc, char const **argv)
 	// a[1] = ft_printf("%.4s", "42");
 	// a[2] = ft_printf("%4.15s", "42 is the answer");
 	// a[3] = ft_printf("%4.s", "42");
-	ft_printf("\n");
+	// ft_printf("\n");
 	// a[0] = ft_printf("%d", 42);
 	// a[1] = ft_printf("%i", 42);
 	// a[2] = ft_printf("This is a simple test.");
 	// a[3] = ft_printf("%u", -42);
-	printf("Lib:\n");
+	// printf("Lib:\n");
 	// printf("integer: %d; character: %C\n", 123, 57000);
 	// printf(":%15s:\n", "Hello, world!");
 	// printf(":%.10s:\n", "Hello, world!");
@@ -204,15 +211,15 @@ int	main(int argc, char const **argv)
 	// b[2] = printf("%*.*d\n", 0, 3, 0);
 	// b[3] = printf("{%05.*d}\n", -15, 42);
 	// b[4] = printf("{%.*d}\n", -5, 42);
-	b[0] = printf("%5.5d| %5.5d| %5.- d| %5.-+0# d|\n", -33812, -33812, -33812, -33812);
-	b[1] = printf("%5.4d| %5.4d| %5.4- d| %5.4-+0# d|\n", -33812, -33812, -33812, -33812);
-	b[2] = printf("%5.5d| %5.5d| %5.- d| %5.-+0# d|\n", 33812, 33812, 33812, 33812);
-	b[3] = printf("%5.4d| %5.4d| %5.4- d| %5.4-+0# d|\n", 33812, 33812, 33812, 33812);
-	b[4] = printf("%5.5d|%5.5d|%5. d|%5.+0# d|\n", 0, 0, 0, 0);
-	b[5] = printf("%5.5d|%5.4d|%5.4 d|%5.4+0# d|\n", 0, 0, 0, 0);
-	b[6] = printf("%5.5d|%5.5d|%5. d|%5.+0# d|\n", 1001, 1001, 1001, 1001);
-	b[7] = printf("%5.5d|%5.4d|%5.4 d|%5.4+0# d|\n", -1000, -1000, -1000, -1000);
-	b[8] = printf("%5.5d|%5.5d|%5. d|%5.+0# d|\n", 1, 1, 1, 1);
+	// b[0] = printf("%5.5d| %5.5d| %5.- d| %5.-+0# d|\n", -33812, -33812, -33812, -33812);
+	// b[1] = printf("%5.4d| %5.4d| %5.4- d| %5.4-+0# d|\n", -33812, -33812, -33812, -33812);
+	// b[2] = printf("%5.5d| %5.5d| %5.- d| %5.-+0# d|\n", 33812, 33812, 33812, 33812);
+	// b[3] = printf("%5.4d| %5.4d| %5.4- d| %5.4-+0# d|\n", 33812, 33812, 33812, 33812);
+	// b[4] = printf("%5.5d|%5.5d|%5. d|%5.+0# d|\n", 0, 0, 0, 0);
+	// b[5] = printf("%5.5d|%5.4d|%5.4 d|%5.4+0# d|\n", 0, 0, 0, 0);
+	// b[6] = printf("%5.5d|%5.5d|%5. d|%5.+0# d|\n", 1001, 1001, 1001, 1001);
+	// b[7] = printf("%5.5d|%5.4d|%5.4 d|%5.4+0# d|\n", -1000, -1000, -1000, -1000);
+	// b[8] = printf("%5.5d|%5.5d|%5. d|%5.+0# d|\n", 1, 1, 1, 1);
 	// b[0] = printf("%.-5d| %.5-d| %.- d| %.-+0# d|\n", -33812, -33812, -33812, -33812);
 	// b[1] = printf("%.-4d| %.4-d| %.4- d| %.4-+0# d|\n", -33812, -33812, -33812, -33812);
 	// b[2] = printf("%.-5d| %.5-d| %.- d| %.-+0# d|\n", 33812, 33812, 33812, 33812);
@@ -233,11 +240,11 @@ int	main(int argc, char const **argv)
 	// b[8] = printf("\n{%.u}", 42);
 	// b[9] = printf("\n%.d, %.0d", 0, 0);
 	// printf("\nLe fichier \x1b[36m%s\x1b[0m contient : \x1b[31m%s\x1b[0m", "xyz", "ABCDEF");
-	n = 9;
-	i = -1;
-	printf("\n");
-	while (++i < n)
-		if (a[i] != b[i])
-			printf("Test %d FAIL: You %d | Lib %d\n", i, a[i], b[i]);
+	// n = 9;
+	// i = -1;
+	// printf("\n");
+	// while (++i < n)
+	// 	if (a[i] != b[i])
+	// 		printf("Test %d FAIL: You %d | Lib %d\n", i, a[i], b[i]);
 	return (0);
 }
