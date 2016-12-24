@@ -10,10 +10,8 @@
 #                                                                              #
 # **************************************************************************** #
 
-#NAME		=	ft_printf
-LIBNAME		=	libftprintf.a
+NAME		=	libftprintf.a
 
-#FUNCS		+=	main.c
 FUNCS		+=	ft_printf.c\
 				ft_putulnbr.c\
 				ft_putlldbl.c\
@@ -22,25 +20,31 @@ FUNCS		+=	ft_printf.c\
 				ft_wcharstr.c\
 				ft_prtf_str.c\
 				ft_prtf_xop.c\
-				ft_prtf_uid.c
+				ft_prtf_uid.c\
+				ft_putstr.c\
+				ft_strlen.c\
+				ft_putchar.c\
+				ft_atoi.c\
+				ft_strncmp.c\
+				ft_isdigit.c
 
-LIB_FUNCS	=	ft_isalpha.c\
+#LIB_FUNCS	=	ft_isalpha.c\
 				ft_isdigit.c\
 				ft_isalnum.c\
 				ft_isascii.c\
 				ft_isprint.c
-LIB_FUNCS	+=	ft_toupper.c\
+#LIB_FUNCS	+=	ft_toupper.c\
 				ft_tolower.c\
 				ft_itoa.c\
 				ft_atoi.c\
 				ft_bzero.c
-LIB_FUNCS	+=	ft_lstnew.c\
+#LIB_FUNCS	+=	ft_lstnew.c\
 				ft_lstdelone.c\
 				ft_lstdel.c\
 				ft_lstadd.c\
 				ft_lstiter.c\
 				ft_lstmap.c
-LIB_FUNCS	+=	ft_memalloc.c\
+#LIB_FUNCS	+=	ft_memalloc.c\
 				ft_memchr.c\
 				ft_memmove.c\
 				ft_memcpy.c\
@@ -48,7 +52,7 @@ LIB_FUNCS	+=	ft_memalloc.c\
 				ft_memcmp.c\
 				ft_memdel.c\
 				ft_memset.c
-LIB_FUNCS	+=	ft_putchar.c\
+#LIB_FUNCS	+=	ft_putchar.c\
 				ft_putstr.c\
 				ft_putendl.c\
 				ft_putnbr.c\
@@ -56,7 +60,7 @@ LIB_FUNCS	+=	ft_putchar.c\
 				ft_putstr_fd.c\
 				ft_putendl_fd.c\
 				ft_putnbr_fd.c
-LIB_FUNCS	+=	ft_strcpy.c\
+#LIB_FUNCS	+=	ft_strcpy.c\
 				ft_strncpy.c\
 				ft_strcmp.c\
 				ft_strequ.c\
@@ -83,7 +87,7 @@ LIB_FUNCS	+=	ft_strcpy.c\
 				ft_strsplit.c\
 				ft_strtrim.c
 
-LIB_FUNCS	+= 	ft_atof.c\
+#LIB_FUNCS	+= 	ft_atof.c\
 				ft_strndup.c\
 				ft_isspace.c\
 				ft_power.c\
@@ -101,22 +105,22 @@ LIB_FUNCS	+= 	ft_atof.c\
 				ft_itoa_base.c\
 
 
-LIBFT		=	./libft/libft.a
-LIBINC		=	-I./libft
-LIBLINK		=	-L./libft -lft
+#LIBFT		=	./libft/libft.a
+#LIBINC		=	-I./libft
+#LIBLINK		=	-L./libft -lft
 
 CC			=	gcc
 CFLAGS		=	-Wall -Wextra -Werror
 OBJS		=	$(addprefix $(OBJS_DIR), $(FUNCS:.c=.o))
-OBJS 		+=	$(addprefix $(LIB_DIR), $(LIB_FUNCS:.c=.o))
+#OBJS 		+=	$(addprefix $(LIB_DIR), $(LIB_FUNCS:.c=.o))
 
-LIB_DIR		=	./libft/build/
+#LIB_DIR		=	./libft/build/
 INC_DIR		=	./includes/
 OBJS_DIR	=	./build/
 
 .PHONY: all clean fclean re
 
-all: $(LIBFT) $(LIBNAME) #$(NAME)
+all: $(NAME)
 
 build:
 	@mkdir -p $(OBJS_DIR)
@@ -124,25 +128,23 @@ build:
 $(OBJS_DIR)%.o: %.c | build
 	@$(CC) $(CFLAGS) $(LIBINC) -I $(INC_DIR) -c $< -o $@
 
-$(LIBNAME): $(OBJS)
+#	@$(CC) $(CFLAGS) $(LIBINC) -I $(INC_DIR) -c $< -o $@
+
+#$(LIBFT):
+#	@make -C ./libft
+
+$(NAME): $(OBJS)
 	@ar rcs $@ $^
-
-$(LIBFT):
-	@make -C ./libft
-
-#$(NAME): $(OBJS)
-#	@$(CC) -o $(NAME) $(OBJS) $(LIBLINK)
 
 clean:
 	@/bin/rm -rf $(OBJS_DIR)
-	@make -C ./libft clean
+#	@make -C ./libft clean
 	@/bin/rm -f *.out
 	@/bin/rm -f ._*
 	@/bin/rm -f .DS*
 
 fclean: clean
-#	@/bin/rm -f $(NAME)
-	@/bin/rm -f $(LIBNAME)
-	@make -C ./libft fclean
+	@/bin/rm -f $(NAME)
+#	@make -C ./libft fclean
 
 re: fclean all

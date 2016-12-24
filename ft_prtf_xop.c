@@ -68,7 +68,7 @@ int			ft_conv_xcxou(t_data *d, va_list ap, int cs, int base)
 	if (base == 16)
 		inc = ft_wnp(len, (cs == 1) ? "0x" : "0X", d, (ud > 0));
 	else if (base == 8)
-		inc = ft_wnp(len, (d->prec > 0 && d->farr[0]) ? "" : "0", d, (ud > 0));
+		inc = ft_wnp(len, (d->prec > len) ? "" : "0", d, (ud > 0));
 	else if (base == 10)
 		inc = ft_wnp(len, "", d, (ud > 0));
 	(ud > 0 || d->prec || (base == 8 && d->farr[0])) ? ft_putstr(s) : 0;

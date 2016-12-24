@@ -10,9 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <unistd.h>
-
 int		ft_numlen(unsigned long long n)
 {
 	unsigned long long	num;

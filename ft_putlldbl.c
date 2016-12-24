@@ -10,10 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "ft_printf.h"
-#include <unistd.h>
-#include <stdio.h>
 
 long double	ft_round(long double n, int prec)
 {
@@ -43,9 +40,9 @@ void		ft_putlldbl(long double n, int prec)
 	ival = n;
 	ft_putulnbr(ival);
 	n = ft_round(n - ival, prec);
-	if (prec)
+	if (prec > 0)
 		ft_putchar('.');
-	while (prec--)
+	while (prec-- > 0)
 	{
 		n = n * 10.0;
 		ft_putchar((long long)n % 10 + '0');

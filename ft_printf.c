@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "ft_printf.h"
-#include <stdio.h>
 
 void		ft_reset_data(t_data *d)
 {
@@ -48,7 +46,7 @@ static int	ft_check_flags(t_data *d, const char *fmt, int sh)
 	((!ft_strncmp(fmt, "hh", 2) || !ft_strncmp(fmt, "ll", 2)) && ++sh))
 		&& (d->modn += (int)(*fmt) * (sh + 2)))
 		sh++;
-	else if (d->prec == -1 && *fmt == '.' && sh++)
+	else if (*fmt == '.' && sh++)
 	{
 		d->prec = ft_atoi(fmt + 1);
 		(d->prec < 0) ? (d->prec = 0) : 0;

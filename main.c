@@ -22,15 +22,30 @@ void ft_putlldbl(long double n, int prec);
 
 int	main(int argc, char const **argv)
 {
-	// int a[11];
-	// int	b[11];
+	int a[11];
+	int	b[11];
 	// int	n;
 	int	i;
 
-	if (argc < 2 && argv[0])
-		return (0);
-	printf("%s\n", argv[1]);
 	setlocale(LC_ALL, "");
+	    wchar_t        c = L'\x82';
+    a[0]=ft_printf("%C\n", c);
+    a[1]=ft_printf("%C\n", L'ø');
+    int            r00 = 0;
+    a[2]=ft_printf("Lalalala, %d%% des gens qui parlent à Ly adorent %s. Ou Presque. %p", 100, "Ly", &r00);
+    a[3]=ft_printf("Lalalala, %d%% des gens qui parlent %C Ly adorent %s. Ou Presque. %d, %u, %X, %c", 100, L'à', "Ly", 2, 10, 10000, '\n', "ôHohoho");
+
+    b[0]=printf("%C\n", c);
+    b[1]=printf("%C\n", L'ø');
+    b[2]=printf("Lalalala, %d%% des gens qui parlent à Ly adorent %s. Ou Presque. %p", 100, "Ly", &r00);
+    b[3]=printf("Lalalala, %d%% des gens qui parlent %C Ly adorent %s. Ou Presque. %d, %u, %X, %c", 100, L'à', "Ly", 2, 10, 10000, '\n', "ôHohoho");
+
+	// if (argc < 2 && argv[0])
+	// 	return (0);
+	// printf("%s\n", argv[1]);
+
+	// ft_printf("%0-*.*s\n", 15, 15, "abc");
+	// ft_printf("%0-15s\n", "abcdfg");
 	// ft_printf("You:\n");
 	// ft_printf(":%15s:\n", "Hello, world!");
 	// ft_printf(":%.10s:\n", "Hello, world!");
@@ -58,6 +73,28 @@ int	main(int argc, char const **argv)
 	// i = 57343;
 	// while (++i < 57348)
 	// 	printf("RES %d: %d\n", i, printf("Char %C\n", i));
+	// a[0] = ft_printf("Bla bla %#-+010*.3o\n", 0, 0);
+	// a[1] = ft_printf("Bla bla %#3.3o\n", 4242);
+	// a[2] = ft_printf("Bla bla % #-+010*.3o\n", 3, 2147483647);
+	// a[3] = ft_printf("Bla bla % #-+010*.10o\n", -15, 2147483647);
+	// a[4] = ft_printf("%#.3o\n", 100);
+	// a[5] = ft_printf("%#o\n", 42);
+	// a[6] = ft_printf("%#.o\n", 42);
+	// a[7] = ft_printf("{%#.5x}\n", 1);
+	// a[8] = ft_printf("Bla bla %#-15.10o\n", 12345678);
+	// a[9] = ft_printf("Bla bla %#15.10o", 12345678);
+	// a[0] = ft_printf("Bla bla %0s\n", 0);
+	// a[1] = ft_printf("Bla bla %*s\n", 10, 0);
+	// a[2] = ft_printf("Bla bla %*s\n", -15, 0);
+	// a[3] = ft_printf("Bla bla %.s\n", 0);
+	// a[4] = ft_printf("Bla bla %.0s\n", 0);
+	// a[5] = ft_printf("Bla bla %.3s\n", 0);
+	// a[6] = ft_printf("Bla bla %.3s\n", "abcd");
+	// ft_printf("%f", 0);
+	// a[0] = ft_printf("%####0000 33..1..#00d\n", 256);
+	// a[0] = ft_printf("%####0000 33..1d", 256);
+	// a[4] = ft_printf("Bla bla % #-+010*.*s\n", 0, 3, 0);
+	// a[5] = ft_printf("Bla bla % #-+010*.*s", 0, -15, 0);
 	// a[0] = ft_printf("%.-5d| %.5-d| %.- d| %.-+0# d|\n", -33812, -33812, -33812, -33812);
 	// a[1] = ft_printf("%.-4d| %.4-d| %.4- d| %.4-+0# d|\n", -33812, -33812, -33812, -33812);
 	// a[2] = ft_printf("%.-5d| %.5-d| %.- d| %.-+0# d|\n", 33812, 33812, 33812, 33812);
@@ -85,7 +122,8 @@ int	main(int argc, char const **argv)
 	// a[7] = ft_printf("\n{%.d}", 42);
 	// a[8] = ft_printf("\n{%.u}", 42);
 	// a[9] = ft_printf("\n%.d, %.0d", 0, 0);
-	ft_printf("\nLe fichier \x1b[36m%s\x1b[0m contient : \x1b[31m%s\x1b[0m", "xyz", "ABCDEF");
+	//ft_printf("Le fichier \x1b[36m%s\x1b[0m contient : \x1b[31m%s\x1b[0m", "xyz", "ABCDEF");
+	//printf("Le fichier \x1b[36m%s\x1b[0m contient : \x1b[31m%s\x1b[0m", "xyz", "ABCDEF");
 	// a[0] = ft_printf("%15.4s", "42");
 	// a[1] = ft_printf("NULL s %s", "");
 	// a[0] = ft_printf("%.4s", "42 is the answer");
@@ -109,7 +147,7 @@ int	main(int argc, char const **argv)
 	// a[7] = ft_printf("%X", -255);
 	// a[0] = ft_printf("%C\n", L'\u4E2A');
 	// a[1] = ft_printf("%C", L'a');
-	// a[2] = ft_printf("%S\n", L"米米米米米");
+	
 	// a[3] = ft_printf("%S\n", L"XYZab");
 	// a[0] = ft_printf("%010d\n", 42);
 	// a[1] = ft_printf("%010d\n", -42);
@@ -239,12 +277,33 @@ int	main(int argc, char const **argv)
 	// b[7] = printf("\n{%.d}", 42);
 	// b[8] = printf("\n{%.u}", 42);
 	// b[9] = printf("\n%.d, %.0d", 0, 0);
-	// printf("\nLe fichier \x1b[36m%s\x1b[0m contient : \x1b[31m%s\x1b[0m", "xyz", "ABCDEF");
-	// n = 9;
+	// b[0] = printf("Bla bla %0s\n", 0);
+	// b[1] = printf("Bla bla %*s\n", 10, 0);
+	// b[2] = printf("Bla bla %*s\n", -15, 0);
+	// b[3] = printf("Bla bla %.s\n", 0);
+	// b[4] = printf("Bla bla %.0s\n", 0);
+	// b[5] = printf("Bla bla %.3s\n", 0);
+	// b[6] = printf("Bla bla %.3s\n", "abcd");
+	// b[7] = printf("%.5S", L"米米米米米");
+	// b[0] = printf("%####0000 33..1d", 256);
+	// b[0] = printf("Bla bla %#-+010*.3o\n", 0, 0);
+	// b[1] = printf("Bla bla %#3.3o\n", 4242);
+	// b[2] = printf("Bla bla %#-+010*.3o\n", 3, 2147483647);
+	// b[3] = printf("Bla bla % #-+010*.10o\n", -15, 2147483647);
+	// b[4] = printf("%#.3o\n", 100);
+	// b[5] = printf("%#o\n", 42);
+	// b[6] = printf("%#.o\n", 42);
+	// b[7] = printf("{%#.5x}\n", 1);
+	// b[8] = printf("Bla bla % #-15.10o\n", 12345678);
+	// b[9] = printf("Bla bla % #15.10o", 12345678);
+	// b[4] = printf("Bla bla % #-+010*.*s\n", 0, 3, 0);
+	// b[5] = printf("Bla bla % #-+010*.*s", 0, -15, 0);
+	// printf("Le fichier \x1b[36m%s\x1b[0m contient : \x1b[31m%s\x1b[0m", "xyz", "ABCDEF");
+	// n = 4;
 	// i = -1;
 	// printf("\n");
-	// while (++i < n)
-	// 	if (a[i] != b[i])
-	// 		printf("Test %d FAIL: You %d | Lib %d\n", i, a[i], b[i]);
+	while (++i < 4)
+		if (a[i] != b[i])
+			printf("Test %d FAIL: You %d | Lib %d\n", i, a[i], b[i]);
 	return (0);
 }

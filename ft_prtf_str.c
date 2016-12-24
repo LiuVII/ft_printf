@@ -47,25 +47,19 @@ int		ft_conv_s(t_data *d, va_list ap)
 	int		len;
 	int		l;
 
-	if ((s = va_arg(ap, char *)) || d->farr[1])
-	{
-		len = ft_strlen(s);
-		len = (d->prec >= 0 && d->prec < len) ? d->prec : len;
-		l = len - 1;
-		if (!d->farr[2])
-			while (++l < d->width)
-				(d->farr[1]) ? ft_putchar('0') : ft_putchar(' ');
-		write(1, s, len);
-		if (d->farr[2])
-			while (++l < d->width)
-				ft_putchar(' ');
-		d->res += len + ((d->width > len) ? (d->width - len) : 0);
-	}
-	else
-	{
-		ft_putstr("(null)");
-		d->res += 6;
-	}
+	if (!(s = va_arg(ap, char *)))
+		s = "(null)";
+	len = ft_strlen(s);
+	len = (d->prec >= 0 && d->prec < len) ? d->prec : len;
+	l = len - 1;
+	if (!d->farr[2])
+		while (++l < d->width)
+			(d->farr[1]) ? ft_putchar('0') : ft_putchar(' ');
+	write(1, s, len);
+	if (d->farr[2])
+		while (++l < d->width)
+			ft_putchar(' ');
+	d->res += len + ((d->width > len) ? (d->width - len) : 0);
 	ft_reset_data(d);
 	return (0);
 }
@@ -76,23 +70,20 @@ int		ft_conv_cs(t_data *d, va_list ap)
 	int		len;
 	int		l;
 
-	if ((ws = va_arg(ap, wchar_t *)))
-	{
-		len = ft_wstrlen(ws, -1);
-		len = (d->prec >= 0 && d->prec < len) ? d->prec : len;
-		len = ft_wstrlen(ws, len);
-		l = len - 1;
-		if (!d->farr[2])
-			while (++l < d->width)
-				(d->farr[1]) ? ft_putchar('0') : ft_putchar(' ');
-		ft_wputstr(ws, len);
-		if (d->farr[2])
-			while (++l < d->width)
-				ft_putchar(' ');
-		d->res += len + ((d->width > len) ? (d->width - len) : 0);
-	}
-	else if ((d->res += 6))
-		ft_putstr("(null)");
+	if (!(ws = va_arg(ap, wchar_t *)))
+		ws = L"(null)";
+	len = ft_wstrlen(ws, -1);
+	len = (d->prec >= 0 && d->prec < len) ? d->prec : len;
+	len = ft_wstrlen(ws, len);
+	l = len - 1;
+	if (!d->farr[2])
+		while (++l < d->width)
+			(d->farr[1]) ? ft_putchar('0') : ft_putchar(' ');
+	ft_wputstr(ws, len);
+	if (d->farr[2])
+		while (++l < d->width)
+			ft_putchar(' ');
+	d->res += len + ((d->width > len) ? (d->width - len) : 0);
 	ft_reset_data(d);
 	return (0);
 }
