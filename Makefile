@@ -133,8 +133,8 @@ $(OBJS_DIR)%.o: %.c | build
 #$(LIBFT):
 #	@make -C ./libft
 
-$(NAME): $(OBJS)
-	@ar rcs $@ $^
+$(NAME): $(OBJS) $(OBJS_DIR)
+	@ar rcs $@ $(OBJS)
 
 clean:
 	@/bin/rm -rf $(OBJS_DIR)
