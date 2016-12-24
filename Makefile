@@ -54,6 +54,7 @@ $(NAME): build $(OBJS)
 clean:
 	@/bin/rm -rf $(OBJS_DIR)
 	@/bin/rm -f *.out
+	@/bin/rm -f *.o
 	@/bin/rm -f ._*
 	@/bin/rm -f .DS*
 
