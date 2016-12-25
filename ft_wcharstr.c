@@ -20,7 +20,7 @@ size_t	ft_wputchar(int c)
 	size_t	flag;
 
 	flag = 0;
-	wc[3] = (c >= 0x00000080 && ++flag) ? (128 + c % 64) : c;
+	wc[3] = (c >= 0x000000FF && ++flag) ? (128 + c % 64) : c;
 	if (flag == 1)
 	{
 		c = c >> 6;
@@ -53,7 +53,7 @@ size_t	ft_wputstr(wchar_t *ws, int l)
 		{
 			c = *ws;
 			l--;
-			(c >= 0x00000080) ? l-- : 0;
+			(c >= 0x000000FF) ? l-- : 0;
 			c = c >> 6;
 			(c >= 0x00000040) ? l-- : 0;
 			c = c >> 6;
@@ -79,7 +79,7 @@ size_t	ft_wstrlen(wchar_t *wstr, int l)
 		{
 			ltmp = 1;
 			c = *(wstr++);
-			(c >= 0x00000080) ? ltmp++ : 0;
+			(c >= 0x000000FF) ? ltmp++ : 0;
 			c = c >> 6;
 			(c >= 0x00000040) ? ltmp++ : 0;
 			c = c >> 6;
